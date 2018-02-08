@@ -20,10 +20,11 @@ public class TestDrive {
 		/* DI - 1
 		OraUserDao dao = new OraUserDao();*/
 		
-		//DI -2 
-		UserDao dao = new OraUserDao();
+		// DI -2 
+		// UserDao dao = new OraUserDao();
 		
 		// DI-3: Factory 이용
+		UserDao dao = DaoFactory.getDao("my");
 		
 		// 3. dao객체를 이용하여 데이터베이스에 정보 저장
 		dao.insert(user1);
