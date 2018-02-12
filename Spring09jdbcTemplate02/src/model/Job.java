@@ -1,12 +1,12 @@
 package model;
 
 public class Job {
-
+	
 	private String jobId;
 	private String jobTitle;
 	private Integer minSalary;
 	private Integer maxSalary;
-
+	
 	public Job() {}
 
 	public Job(String jobId, String jobTitle, Integer minSalary, Integer maxSalary) {
@@ -15,7 +15,6 @@ public class Job {
 		this.minSalary = minSalary;
 		this.maxSalary = maxSalary;
 	}
-
 
 	public String getJobId() {
 		return jobId;
@@ -63,11 +62,4 @@ public class Job {
 		builder.append("]");
 		return builder.toString();
 	}
-
-
-
-
-
-
-
 }

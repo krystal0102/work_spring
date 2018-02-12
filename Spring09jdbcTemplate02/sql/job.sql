@@ -1,8 +1,12 @@
 DROP TABLE job;
 
-CREATE TABLE job(
-	job_id varchar(10) PRIMARY KEY,
+CREATE TABLE job (
+	job_id VARCHAR(10) PRIMARY KEY,
 	job_title VARCHAR(10),
-	max_salaty INT,
-	min_salaty INT
+	max_salary INT,
+	min_salary INT
 );
+
+SHOW TABLES;
+
+SELECT * FROM job;

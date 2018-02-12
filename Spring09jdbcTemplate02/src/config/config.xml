@@ -33,23 +33,35 @@
 		<constructor-arg ref="dataSource"></constructor-arg>
 	</bean>
 	
-	<!-- NamedParameterJdbcTemplate 객체를 사용하기 위해 bean 객체 생성 -->
+	<!-- NamedParameterJdbcTemplate 객체를 사용하기 위해 빈 객체 생성 -->
 	<bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSource"></constructor-arg>
 	</bean>
 	
-	<!-- 데이터베이스의 Transaction 관리를 스프링이 대신 해주기 위해 생성한 bean 객체 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<!-- 데이터베이스의 트랜젝션 관리를 스프링이 대신 해주기위해 생성한 빈 객체 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
-	<!-- 애노테이션을 이용해서 Transaction 관리를 할 것이라고 설정한 것이다 -->
+	<!-- 애노테이션을 이용해서 트랜젝션 관리를 할 것이라고 설정한 것이다. -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
-	<!-- 스프링에서 만든 Annotation들을 사용 -->
+	<!-- 스프링에서 만든 Annotation들을 사용하겠다는 것 -->
 	<context:annotation-config></context:annotation-config>
 	
-	<!-- 스프링 애노테이션 적용 범위를 패키지 단위로 지정 -->
-	<context:component-scan base-package="dao, service"></context:component-scan>
-	
+	<!-- 스프링 애노테이션 적용범위를 패키지 단위로 지정 -->
+	<context:component-scan base-package="dao, service">
+	</context:component-scan>
+
 </beans>
+
+
+
+
+
+
+
+
+
+
