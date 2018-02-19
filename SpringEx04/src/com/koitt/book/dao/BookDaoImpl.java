@@ -54,6 +54,7 @@ public class BookDaoImpl implements BookDao {
 			list  = template.query(sql, new BeanPropertyRowMapper<Book>(Book.class));
 			
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new BookException(e.getMessage());
 		}
 		return list;

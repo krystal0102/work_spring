@@ -31,5 +31,7 @@
 			</c:forEach>	
 		</tbody>
 	</table>
+	
+	<a href="book-list.do">도서 목록으로 이동</a>
 </body>
 </html>
