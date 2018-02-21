@@ -6,23 +6,19 @@
 	<h1>도서 정보 등록</h1>
 	<form action="book-add.do" method="post">
 		<div>
-			<label>번  호<input type="text" name="isbn"></label>
-		</div>
-		
-		<div>
 			<label>제  목<input type="text" name="title"></label>
 		</div>
 		
 		<div>
-			<label>저  자<input type="text" name="title"></label>
+			<label>저  자<input type="text" name="author"></label>
 		</div>
 		
 		<div>
-			<label>출판사<input type="text" name="title"></label>
+			<label>출판사<input type="text" name="publisher"></label>
 		</div>
 		
 		<div>
-			<label>가  격<input type="text" name="title"></label>
+			<label>가  격<input type="text" name="price"></label>
 		</div>
 		
 		<div>
