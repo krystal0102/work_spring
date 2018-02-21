@@ -29,7 +29,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public void add(Users users) throws UsersException {
-		
+		dao.insert(users);
 	}
 
 	@Override

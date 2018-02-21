@@ -4,27 +4,27 @@
 <html>
 <head><title>사용자 목록</title></head>
 <body>
-   <h1>사용자 목록</h1>
-   <table>
-      <thead>
-         <tr>
-            <th>사용자 번호</th>
-            <th>이메일</th>
-            <th>이름</th>
-            <th>첨부파일</th>
-         </tr>
-      </thead>
-      <tbody>
-         <c:forEach items="${ list }" var="users">
-            <tr>
-               <td>${ users.no }</td>
-               <td>${ users.email }</td>
-               <td>${ users.name }</td>
-               <%-- <td>${ users.attachment }</td> --%>
-            </tr>
-         </c:forEach>
-      </tbody>
-   </table>
+	<h1>사용자 목록</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>사용자 번호</th>
+				<th>이메일</th>
+				<th>이름</th>
+				<th>첨부파일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${ list }" var="users">
+				<tr>
+					<td>${ users.no }</td>
+					<td>${ users.email }</td>
+					<td>${ users.name }</td>
+					<td><img width="50" height="50" src="${ uploadPath }/${ users.attachment }"></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 
 </body>
 </html>

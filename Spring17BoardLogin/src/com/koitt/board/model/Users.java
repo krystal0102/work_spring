@@ -11,6 +11,7 @@ public class Users implements Serializable {
 	private String email;
 	private String password;
 	private String name;
+	private String attachment; 			// 프로필 사진 파일명
 	private List<Board> boardList;		// 해당 사용자의 게시물 목록
 	
 	// 사용자 한명은 게시물을 여러개 가질 수 있는 일대다(1:N)관계 이므로 위와 같이 List로 필드를 표현한다.
@@ -19,12 +20,13 @@ public class Users implements Serializable {
 	public Users() { }
 	
 	// 모든 필드 초기화하는 생성자
-	public Users(Integer no, String email, String password, String name) {
+	public Users(Integer no, String email, String password, String name, String attachment) {
 		super();
 		this.no = no;
 		this.email = email;
 		this.password = password;
 		this.name = name;
+		this.attachment = attachment;
 	}
 	
 	// getter setter
@@ -67,8 +69,15 @@ public class Users implements Serializable {
 	public void setBoardList(List<Board> boardList) {
 		this.boardList = boardList;
 	}
-
 	
+	public String getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(String attachment) {
+		this.attachment = attachment;
+	}
+
 	// equals
 	@Override
 	public boolean equals(Object obj) {
@@ -99,6 +108,7 @@ public class Users implements Serializable {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((no == null) ? 0 : no.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((attachment == null) ? 0 : attachment.hashCode());
 		return result;
 	}
 
@@ -115,8 +125,11 @@ public class Users implements Serializable {
 		builder.append(password);
 		builder.append(", name=");
 		builder.append(name);
+		builder.append(", attachment=");
+		builder.append(attachment);
 		builder.append(", boardList=");
 		builder.append(boardList);
+	
 		builder.append("]");
 		return builder.toString();
 	}
