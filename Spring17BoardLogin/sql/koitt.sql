@@ -44,6 +44,3 @@ INSERT INTO board (title, content, user_no, regdate, attachment)
 SELECT * FROM board;
 
 SELECT * FROM users;
-
-#SELECT u.no as "UNO", u.email, u.password, u.name, u.attachment
-#FROM users u;

@@ -1,7 +1,6 @@
 package com.koitt.board.service;
 
 import java.util.List;
-
 import com.koitt.board.model.Users;
 import com.koitt.board.model.UsersException;
 
