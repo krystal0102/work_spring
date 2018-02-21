@@ -24,7 +24,7 @@ public class UsersWebController {
 		List<Users> list = null;
 		
 		try {
-			usersService.list();
+			list = usersService.list();
 		} catch (UsersException e) {
 			System.out.println(e.getMessage());
 			model.addAttribute("error", "server");

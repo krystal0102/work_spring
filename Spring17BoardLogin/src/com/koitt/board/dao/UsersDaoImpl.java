@@ -25,13 +25,13 @@ public class UsersDaoImpl implements UsersDao {
 
 		try {
 
-			list = session.selectList(MAPPERS_NS + ".select-all");
+			list = session.selectList(MAPPERS_NS + ".select-all-users");
 
 		} catch(Exception e) {
 			throw new UsersException(e.getMessage());
 		}
 
-		return null;
+		return list;
 	}
 
 	@Override
