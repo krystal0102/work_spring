@@ -4,6 +4,26 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	id="WebApp_ID" version="3.1">
 	
+	<!--
+		 Root Application Context
+	     아래와 같이 설정하면 applicationContext.xml 에한
+	     스프링설정은 애플리케이션 단위에 포함된 영억에 모두 설정되는 것이다.
+	     
+	     dispatcher-servlet.xml 스프링 설정은 해당 servlet영억에만 설정값 적용된다.
+	 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+	
+	<!--
+     	 applicationContext.xml에서 생성한 빈을 다른 서블릿에서 사용하기 위해서는
+      	ContextLoaderListener가 필요하다.
+    -->
+   <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+   </listener>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

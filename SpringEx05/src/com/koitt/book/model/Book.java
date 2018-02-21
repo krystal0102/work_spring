@@ -2,6 +2,8 @@ package com.koitt.book.model;
 
 import java.io.Serializable;
 
+import com.koitt.book.model.Users;
+
 public class Book implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -13,12 +15,13 @@ public class Book implements Serializable {
     private Integer price;		// 가격
     private String description;	// 책 설명
     private String attachment; 	// 첨부파일명 
+    private Users users;
     
     // 1. 기본 생성자
     public Book() {}
 
     // 2. 생성자
-	public Book(Integer isbn, String title, String author, String publisher, Integer price, String description,String attachment) {
+	public Book(Integer isbn, String title, String author, String publisher, Integer price, String description,String attachment, Users users) {
 		this.isbn = isbn;
 		this.title = title;
 		this.author = author;
@@ -26,6 +29,7 @@ public class Book implements Serializable {
 		this.price = price;
 		this.description = description;
 		this.attachment = attachment;
+		this.users = users;
 	}
 
 	// 3. getter, setter
@@ -84,6 +88,14 @@ public class Book implements Serializable {
 	public void setAttachment(String attachment) {
 		this.attachment = attachment;
 	}
+	
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
 
 	// 4. equals, hashCode 작성
 	@Override
@@ -97,6 +109,7 @@ public class Book implements Serializable {
 		result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((attachment == null) ? 0 : attachment.hashCode());
+		result = prime * result + ((users == null) ? 0 : users.hashCode());
 		return result;
 	}
 
@@ -136,6 +149,8 @@ public class Book implements Serializable {
 		builder.append(description);
 		builder.append(", attachment=");
 		builder.append(attachment);
+		builder.append(", users=");
+		builder.append(users);
 		builder.append("]");
 		return builder.toString();
 	}

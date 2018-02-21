@@ -5,6 +5,11 @@
 <body>
 	<h1>도서 정보 등록</h1>
 	<form action="book-add.do" method="post" enctype="multipart/form-data">
+	
+		<div>
+			<label>번  호<input type="text" name="user_no"></label>
+		</div>
+		
 		<div>
 			<label>제  목<input type="text" name="title"></label>
 		</div>

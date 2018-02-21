@@ -16,12 +16,12 @@ import com.koitt.book.model.Book;
 import com.koitt.book.model.FileException;
 
 @Service
-public class FileServiceImpl implements FileService {
+public class FileServiceImpl<T> implements FileService<T> {
 	
 	private static final String UP = "/upload";
 
 	@Override
-	public void add(HttpServletRequest request, MultipartFile attachment, Book book) throws FileException {	
+	public String add(HttpServletRequest request, MultipartFile attachment) throws FileException {	
 		try {
 			
 			String path = request.getServletContext().getRealPath(UP);
@@ -47,13 +47,15 @@ public class FileServiceImpl implements FileService {
 				
 				uploadFilename = URLEncoder.encode(uploadFilename, "UTF-8");
 				
-				book.setAttachment(uploadFilename);
+				return uploadFilename;
 			}
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			throw new FileException(e.getMessage());
 		}
+		
+		return null;
 	
 	}
 
@@ -133,10 +135,16 @@ public class FileServiceImpl implements FileService {
 			case ".jpg":
 			case ".jpeg":
 			case ".png":
+			case ".gif":
 				return contextPath + UP + "/" + filename;
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public String getUploadPath(HttpServletRequest request) {
+		return request.getContextPath() + UP;
 	}
 
 }

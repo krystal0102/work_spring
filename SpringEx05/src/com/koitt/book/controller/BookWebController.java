@@ -107,7 +107,8 @@ public class BookWebController {
 		book.setDescription(description);
 		
 		try {
-			fileService.add(request, attachment, book);
+			String filename = fileService.add(request, attachment);
+			book.setAttachment(filename);
 			bookService.add(book);
 			
 		} catch(BookException e) {
@@ -181,7 +182,9 @@ public class BookWebController {
 		
 		try {
 			
-			fileService.add(request, attachment, book);
+			String filename = fileService.add(request, attachment);
+			
+			book.setAttachment(filename);
 			
 			String toDeleteFilename = bookService.modify(book);
 			
