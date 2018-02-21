@@ -7,25 +7,25 @@ import java.util.Date;
 public class Board implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Integer no;				// 글 번호
-	private String title;			// 글 제목
-	private String content;			// 글 내용
-	private Integer userNo;			// 사용자 번호
-	private Date regdate;			// 등록일
-	private String attachement;		// 첨부파일명
-	
+	private Integer no;			// 글 번호
+	private String title;		// 글 제목
+	private String content;		// 글 내용
+	private Integer userNo;		// 사용자 번호
+	private Date regdate;		// 등록일
+	private String attachment;	// 첨부파일명
 	
 	// 1. 기본생성자
 	public Board() {}
 
 	// 2. 생성자 (모든 필드 초기화)
-	public Board(Integer no, String title, String content, Integer userNo, Date regdate, String attachement) {
+	public Board(Integer no, String title, String content, Integer userNo, 
+			Date regdate, String attachment) {
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.userNo = userNo;
 		this.regdate = regdate;
-		this.attachement = attachement;
+		this.attachment = attachment;
 	}
 
 	// 3. getter, setter
@@ -69,14 +69,13 @@ public class Board implements Serializable {
 		this.regdate = regdate;
 	}
 
-	public String getAttachement() {
-		return attachement;
+	public String getAttachment() {
+		return attachment;
 	}
 
-	public void setAttachement(String attachement) {
-		this.attachement = attachement;
+	public void setAttachment(String attachment) {
+		this.attachment = attachment;
 	}
-	
 
 	// 3. hashCode
 	@Override
@@ -88,7 +87,7 @@ public class Board implements Serializable {
 		result = prime * result + ((regdate == null) ? 0 : regdate.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((userNo == null) ? 0 : userNo.hashCode());
-		result = prime * result + ((attachement == null) ? 0 : attachement.hashCode());
+		result = prime * result + ((attachment == null) ? 0 : attachment.hashCode());
 		return result;
 	}
 
@@ -128,8 +127,8 @@ public class Board implements Serializable {
 		builder.append(userNo);
 		builder.append(", regdate=");
 		builder.append(regdate);
-		builder.append(", attachement=");
-		builder.append(attachement);
+		builder.append(", attachment=");
+		builder.append(attachment);
 		builder.append("]");
 		return builder.toString();
 	}	

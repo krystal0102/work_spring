@@ -1,11 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>게시판 목록</title>
-</head>
+<head><title>게시판 목록</title></head>
 <body>
 	<h1>게시판 목록</h1>
 	<a href="board-add.do">글쓰기</a>
@@ -19,7 +16,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items='${ list }' var="board">
+			<c:forEach items="${ list }" var="board">
 				<tr>
 					<td>${ board.no }</td>
 					<td><a href="board-detail.do?no=${ board.no }">${ board.title }</a></td>
