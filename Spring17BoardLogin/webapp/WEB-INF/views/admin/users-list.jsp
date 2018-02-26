@@ -25,6 +25,8 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	<a href="<c:url value='/index.do'/>">홈으로 이동</a>
 
 </body>
 </html>

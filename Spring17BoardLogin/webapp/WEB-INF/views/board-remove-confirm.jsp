@@ -10,10 +10,11 @@
 		html의 form은 get과 post 두가지만 제공하므로
 		delete 대신 post를 사용한다.
 	 -->
-	<form action="board-remove.do" method="post">
+	<form action="<c:url value='/board/board-remove.do'/>" method="post">
 		<input type="hidden" name="no" value="${ no }">
 		<input type="submit" value="삭제하기">
+		<input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
 	</form>
-	<a href="board-list.do">글 목록으로 이동</a>
+	<a href="<c:url value='/board/board-list.do'/>">글 목록으로 이동</a>
 </body>
 </html>

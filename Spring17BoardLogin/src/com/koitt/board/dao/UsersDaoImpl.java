@@ -35,10 +35,32 @@ public class UsersDaoImpl implements UsersDao {
 	}
 
 	@Override
-	public Users select(Integer no) {
-
-		return null;
+	public Users select(Integer no) throws UsersException {
+		Users users = null;
+		
+		try {
+			users = session.selectOne(MAPPERS_NS + ".select-users", no);
+		} catch (Exception e) {
+			throw new UsersException(e.getMessage());
+		}
+		
+		return users;
 	}
+	
+	@Override
+	public Users selectByEmail(String email) throws UsersException {
+		Users users = null;
+		
+		try {
+			users = session.selectOne(MAPPERS_NS + ".select-users-by-email", email);
+		} catch(Exception e) {
+			throw new UsersException(e.getMessage());
+		}
+		
+		return users;
+	}
+	
+	
 
 	@Override
 	public void insert(Users users) throws UsersException {
@@ -62,8 +84,35 @@ public class UsersDaoImpl implements UsersDao {
 	}
 
 	@Override
-	public void update(Users users) {
+	public void update(Users users) throws UsersException {
+		try {
+			session.update(MAPPERS_NS + ".update-users", users);
+		} catch (Exception e) {
+			throw new UsersException(e.getMessage());
+		}
 
 	}
+
+	@Override
+	public void insertAuthority(Users users) throws UsersException {
+		try {
+			session.insert(MAPPERS_NS + ".insertAuthority", users); 
+		} catch(Exception e) {
+			throw new UsersException(e.getMessage());
+		}
+	}
+
+	@Override
+	public Integer selectLastInsertId() throws UsersException {
+		Integer lastInsertId = null;
+		try {
+			lastInsertId = session.selectOne(MAPPERS_NS + ".select-last-insert-id");
+		} catch (Exception e) {
+			throw new UsersException(e.getMessage());
+		}
+		return lastInsertId;
+	}
+
+	
 
 }
