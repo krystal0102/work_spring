@@ -7,14 +7,31 @@ import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.omg.CORBA.PRIVATE_MEMBER;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.koitt.vo.User;
 
+// 스프링 테스트 컨텍스트 프레임 워크의 JUnit확장기능 지정 
+@RunWith(SpringJUnit4ClassRunner.class)
+
+// 테스트 컨텍스트가 자동으로 만들어줄 어플리케이션 컨텍스트의 위치 지정
+@ContextConfiguration(locations="/com/koitt/config/applicationContext.xml")	
 public class UserDaoTest {
+	
+	/*
+	 * 테스트 객체가 만들어지고 나면 스프링 테스트 컨텍스트에 의해 자동으로 값이 주입된다
+	 * 이렇게 사용하는 이유는 컨텍스트 객체가 여러개 생성되는 것을 방지하기 위해서이다
+	 */
+	
+	@Autowired
+	private ApplicationContext context;
 
 	// 픽스처(fixture): 테스트를 수행하는데 필요한 정보나 객체
 	// setUp() 메소드에서 만드는 객체를 테스트 메소드에서 사용할 수 있도록 필드로 선언
@@ -27,14 +44,15 @@ public class UserDaoTest {
 	// @Test가 실행되기 전에 먼저 실행되어야 하는 메소드를 정의한다
 	@Before 
 	public void setUp() {
-		ApplicationContext context = 
-				new GenericXmlApplicationContext("/com/koitt/config/applicationContext.xml");
-
 		this.dao = context.getBean("userDao", UserDao.class);
 		
 		this.user1 = new User("curling", "김영미", "1234");
 		this.user2 = new User("speed", "이승훈", "5678");
 		this.user3 = new User("skeleton", "윤성빈", "3344");
+		
+		// 생성된 컨텍스트 객체와 UserDaoTest 객체의 주소값을 출력해보자
+		System.out.println("컨텍스트 객체의 주소값: " + this.context.hashCode());
+		System.out.println("UserDaoTest 객체의 주소값: " + this.hashCode());
 	}
 
 	@Test	// JUnit에게 테스트용 메소드임을 알려준다.
