@@ -205,8 +205,8 @@ public class UsersWebController {
 			System.out.println(e.getMessage());
 			request.setAttribute("error", "file");
 		}
-
-		return "rediect:users-modify-confirm.do";
+		request.setAttribute("name", name);
+		return "users-modify-confirm";
 	}
 	
 	@RequestMapping(value="/users-modify-confirm.do", method=RequestMethod.GET)

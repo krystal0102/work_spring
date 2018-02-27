@@ -36,9 +36,7 @@ public class BoardWebController {
 
 	@Autowired
 	private FileService fileService;
-
-
-
+	
 	/*
 	 *  HTTP Method GET 방식으로 /board-list.do를 클라이언트가 요청하면
 	 *  아래 메소드 호출
@@ -68,8 +66,9 @@ public class BoardWebController {
 
 	// 글 상세 화면
 	@RequestMapping(value="/board-detail.do", method=RequestMethod.GET)
-	public String detail(Model model, HttpServletRequest request,
-			@RequestParam(value="no", required=true) String no) {
+	public String detail(Model model, 
+						HttpServletRequest request,
+						@RequestParam(value="no", required=true) String no) {
 		Board board = null;
 		String filename = null;
 		String imgPath = null;

@@ -6,6 +6,7 @@
 <body>
 	<h1>게시판 목록</h1>
 	<a href="<c:url value='/board/board-add.do'/>">글쓰기</a>
+	<a href="<c:url value='/index.do'/>">홈으로 이동</a>
 	<table>
 		<thead>
 			<tr>
