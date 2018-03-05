@@ -5,10 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.koitt.board.model.Board;
 import com.koitt.board.model.FileException;
 
-public interface FileService<T> {
+public interface FileService {
 	
 	// 파일 추가
 	public String add(HttpServletRequest request, MultipartFile attachment) throws FileException;
@@ -20,10 +19,10 @@ public interface FileService<T> {
 	// 파일 삭제
 	public void remove(HttpServletRequest request, String filename) throws FileException;
 	
-	// 파일 저장 경로 + 이미지 파일명 가져오기
+	// 파일 저장 경로 + 이미지 파일명
 	public String getImgPath(HttpServletRequest request, String filename);
 	
-	// 파일 저장 폴더 경로 가져오기 (ContextPath + /upload)
+	// 파일 저장 폴더 경로 가져오기(ContextPath + /upload)
 	public String getUploadPath(HttpServletRequest request);
 }
 

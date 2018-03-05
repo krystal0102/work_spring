@@ -16,7 +16,7 @@ public class CommonWebController {
 	
 	@Autowired
 	private FileService fileService;
-	
+
 	/*
 	 * 다운로드 링크를 화면에서 클릭하면 아래와 같이 서버에 GET 방식으로 요청한다.
 	 * download.do?filename=파일명
@@ -37,5 +37,4 @@ public class CommonWebController {
 			System.out.println(e.getMessage());
 		}
 	}
-
 }

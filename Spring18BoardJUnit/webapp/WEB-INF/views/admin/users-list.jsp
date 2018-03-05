@@ -20,13 +20,11 @@
 					<td>${ users.no }</td>
 					<td>${ users.email }</td>
 					<td>${ users.name }</td>
-					<td><img width="50" height="50" src="${ uploadPath }/${ users.attachment }"></td>
+					<td><img width="100" height="100" src="${ uploadPath }/${ users.attachment }"></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	
-	<a href="<c:url value='/index.do'/>">홈으로 이동</a>
 
 </body>
 </html>

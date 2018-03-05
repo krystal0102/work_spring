@@ -12,11 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.koitt.board.model.Board;
 import com.koitt.board.model.FileException;
 
 @Service
-public class FileServiceImpl<T> implements FileService<T> {
+public class FileServiceImpl implements FileService {
 
 	private static final String UPLOAD_FOLDER = "/upload";
 
@@ -67,10 +66,10 @@ public class FileServiceImpl<T> implements FileService<T> {
 				uploadFilename = URLEncoder.encode(uploadFilename, "UTF-8");
 				
 				/*
-				 * 16진수 시간값이 포함된 파일명을 컨트롤러로 전달한다
+				 * 16진수 시간값이 포함된 파일명을 컨트롤러로 전달한다.
 				 * 전달 후 컨트롤러에서 VO 객체에 setAttachment 메소드를 이용하여
 				 * 파일명을 VO 객체에 설정한다.
-				 */	
+				 */
 				return uploadFilename;
 			}
 			
@@ -183,7 +182,6 @@ public class FileServiceImpl<T> implements FileService<T> {
 			case ".jpg":
 			case ".jpeg":
 			case ".png":
-			case ".gif":
 				return contextPath + UPLOAD_FOLDER + "/" + filename;
 			}
 		}

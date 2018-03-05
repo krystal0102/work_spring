@@ -2,13 +2,12 @@ package com.koitt.board.model;
 
 import java.io.Serializable;
 
-// javaBean
+// Java Bean
 public class Authority implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;				// 권한 번호
-	private String name;			// 권한 이름
+	private Integer id;		// 권한 번호
+	private String name;	// 권한 이름
 	
 	public Authority() {}
 
@@ -46,14 +45,17 @@ public class Authority implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		}	
+		}
+		
 		if (!(obj instanceof Authority)) {
 			return false;
 		}
+		
 		Authority other = (Authority) obj;
 		if (this.id.equals(other.id)) {
 			return true;
-		}	
+		}
+		
 		return false;
 	}
 
@@ -67,6 +69,4 @@ public class Authority implements Serializable {
 		builder.append("]");
 		return builder.toString();
 	}
-
-
 }

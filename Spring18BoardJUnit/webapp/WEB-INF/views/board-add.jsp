@@ -8,7 +8,7 @@
 	<form action="<c:url value='/board/board-add.do'/>" method="post" enctype="multipart/form-data">
 		<div>
 			<span>작성자: </span>
-			<span>${ users.name } (${ users.email })</span>
+			<span>${ users.name }(${ users.email })</span>
 		</div>
 		<div>
 			<label>제목<input type="text" name="title"></label>

@@ -77,7 +77,7 @@ public class Board implements Serializable {
 	public void setAttachment(String attachment) {
 		this.attachment = attachment;
 	}
-	
+
 	public Users getUsers() {
 		return users;
 	}
