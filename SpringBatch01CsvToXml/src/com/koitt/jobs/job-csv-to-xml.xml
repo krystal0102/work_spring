@@ -34,6 +34,7 @@
 	 <!-- ItemReader 빈 생성 -->
 	 <bean id="csvFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 	 	<property name="resource" ref="inputFile" />
+	 	<property name="encoding" value="utf-8" />
 	 	<property name="lineMapper">
 	 		<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	 			<property name="lineTokenizer">
@@ -47,7 +48,7 @@
 	 				<bean class="com.koitt.model.ReportFieldSetMapper" />
 	 				<!--
 	 					만약에 데이터 타입 변환할 필요가 없다면
-	 					아래와 같이 BeanWrapperFieldSetMapper를 사용하세요. 
+	 					아래와 같이 BeanWrapperFieldSetMapper를 사용 
 	 				 -->
 	 				 <!--
 	 				 <bean 
@@ -64,7 +65,7 @@
 	 <bean id="itemProcessor" class="com.koitt.model.CustomItemProcessor" />
 	 
 	 <!--
-	 	ItemWriter 빈 생성
+	 	ItemWriter 빈 생성 : 자바에 있는 객체를 xml로 변환시켜줌
 	 	rootTagName: 최상위에 위치할 태그 이름 
 	  -->
 	 <bean id="xmlItemWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter">
@@ -94,6 +95,8 @@
 	 		writer에 item들을 보내서 write하게 된다.
 	 		(자바과정에서 파일 전송 시, buffering 하는 것과 동일한 원리)
 	 		Spring Batch에서는 한번에 writer에 전달하는 것을 하나의 트랜젝션 단위로 본다.  
+	 		
+	 		아래의 step은 여러개가 될 수 있음~
 	  -->
 	 <batch:job id="csvToXmlJob">
 	 	<batch:step id="step1">

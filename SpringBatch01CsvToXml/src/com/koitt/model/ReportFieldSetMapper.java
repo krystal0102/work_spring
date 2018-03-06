@@ -23,6 +23,8 @@ public class ReportFieldSetMapper implements FieldSetMapper<Report> {
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 	
+	
+	// fieldSet은 ResultSet과 비슷. but, cursor가 없음
 	@Override
 	public Report mapFieldSet(FieldSet fieldSet) throws BindException {
 		Report item = new Report();

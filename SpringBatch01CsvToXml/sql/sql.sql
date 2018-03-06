@@ -4,3 +4,4 @@
 SHOW TABLES;
 
 SELECT * FROM batch_job_instance;
+SELECT * FROM batch_job_execution;
