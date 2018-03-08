@@ -15,7 +15,10 @@
 			<bean class="com.koitt.model.BoardRowMapper" />
 		</property>
 	</bean>
-		 
+	
+	<!-- ItemProcessor Bean 생성 -->
+	<bean id="itemProcessor" class="com.koitt.model.CustomItemProcessor" />
+
 	 <bean id="csvFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
 		<property name="resource" value="file:c:/sample/prac03/board.csv" />
 		<property name="appendAllowed" value="false" />
@@ -24,7 +27,7 @@
 				<property name="delimiter" value="," />
 				<property name="fieldExtractor">
 					<bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
-						<property name="names" value="no, title, content, userNo, attachment" />
+						<property name="names" value="no, title, content, userNo, regdate, attachment" />
 					</bean>
 				</property> 
 			</bean>
@@ -32,18 +35,15 @@
 	</bean>
 	
 	<bean id="fileDeletingTasklet" class="com.koitt.model.FileDeletingTasklet">
-		<property name="directory" value="file:c:/sample/prac03"></property>
+		<property name="directory" value="file:c:/sample/prac03/"></property>
 	</bean>
 	
-	<bean id="mailSendTasklet" class="com.koitt.model.MailSendTasklet">
-		<property name="directory" value="file:c:/sample/prac03/board.csv"></property>
-	</bean>
-	
+	<bean id="mailSendTasklet" class="com.koitt.model.MailSendTasklet" />
 	
 	<batch:job id="csvTomySqlJob">
 		<batch:step id="step1" next="step2">
 			<batch:tasklet>
-				<batch:chunk reader="mySqlItemReader" writer="csvFileItemWriter" commit-interval="1" />
+				<batch:chunk reader="mySqlItemReader" processor="itemProcessor" writer="csvFileItemWriter" commit-interval="1" />
 			</batch:tasklet>
 		</batch:step>
 		<batch:step id="step2" next="step3">

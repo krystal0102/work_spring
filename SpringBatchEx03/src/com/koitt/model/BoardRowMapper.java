@@ -12,6 +12,8 @@ public class BoardRowMapper implements RowMapper<Board> {
 		
 		Board item = new Board();
 		
+		// 
+		
 		item.setNo(rs.getInt("no"));
 		item.setTitle(rs.getString("title"));
 		item.setContent(rs.getString("content"));
