@@ -30,7 +30,7 @@
 		<property name="protocol" value="smtp" />
 		<property name="defaultEncoding" value="utf-8" />
 		<property name="username" value="lsaj29@gmail.com" />
-		<property name="password" value="dltnwjd0191" />
+		<property name="password" value="비밀번호" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.starttls.enable">true</prop>
