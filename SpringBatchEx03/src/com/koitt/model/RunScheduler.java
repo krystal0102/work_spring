@@ -20,7 +20,7 @@ public class RunScheduler {
 	@Autowired
 	private Job job;
 	
-	// * * 0/16 ? * *
+	// 0 0 16 ? * * * 매일 오후 16시마다
 	@Scheduled(cron="0 0 16 ? * *")
 	public void run() {
 		try {
