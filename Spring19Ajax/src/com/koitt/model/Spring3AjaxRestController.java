@@ -1,6 +1,7 @@
 package com.koitt.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +63,57 @@ public class Spring3AjaxRestController {
 		System.out.println("입력받은 차량: " + car.getName() + " / " + car.getNumber());
 		
 		// 입력받은 차량을 데이터베이스에 저장하면 되지만 현재 데이터베이스가 없으므로 출력까지만 구현
+		
+	}
+	
+	// 자동차 한 대 수정하는 메소드
+	@ResponseBody
+	@RequestMapping(value="/car", method=RequestMethod.PUT)
+	public Map<String, Object> modifyCar(@RequestBody Car car) {
+		System.out.println("클라이언트로부터 전달받은 값: " + car.getName() + " / " + car.getNumber() );
+		
+		/*
+		 * 클라이언트로부터 전달받은 값으로 SQL문을 이용해 데이터베이스에 저장된 차량정보를 수정하면 된다.
+		 * 현재 데이터베이스는 구현하지 않았으므로 콘솔로 간단하게 출력까지만 구현
+		 */
+		
+		List<Car> cars = new ArrayList<Car>();
+		cars.add(new Car("BMW", "20너1234"));
+		
+		// 리스트 검색하여 클라이언트로부터 입력받은 name과 동일한 차량이 있는지 검색
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		for (int i = 0; i < cars.size(); i++) {
+			if (car.getName().equals(cars.get(i).getName())) {
+				resultMap.put("message", "차량 수정 성공");
+				return resultMap;
+			}
+		}
+		
+		resultMap.put("message", "차량 수정 실패");
+		return resultMap;
+	}
+	
+	// 자동차 한 대 삭제하는 메소드
+	@ResponseBody	
+	@RequestMapping(value="/car/{name}", method=RequestMethod.DELETE)
+	public Map<String, Object> removeCar(@PathVariable String name) {
+		// 데이터베이스 대신 리스트로 표현
+		List<Car> cars = new ArrayList<>();	
+		cars.add(new Car("BMW", "20너1234"));
+		cars.add(new Car("모닝", "11가1111"));
+		
+		// 데이터베이스에서 삭제할 차량 검색
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		for (int i = 0; i < cars.size(); i++) {
+			if (name.equals(cars.get(i).getName())) {
+				cars.remove(i);		//  리스트에서 차량 삭제
+				resultMap.put("message", "차량 삭제 성공");
+				return resultMap;
+			}
+		}
+		
+		resultMap.put("message", "차량 삭제 실패");
+		return resultMap;
 		
 	}
 }
