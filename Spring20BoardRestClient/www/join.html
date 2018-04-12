@@ -4,17 +4,16 @@
 	<meta charset="utf-8">
 	<title>회원가입</title>
 </head>
-
 <body>
 	<div data-role="page">
-		<div data-role="header">
+		<div data-role="header" data-add-back-btn="true">
 			<h1>회원가입</h1>
 		</div>
 		<div data-role="content">
 			<form id="frmJoin">
-				<div data-role="fieldcantain">
+				<div data-role="fieldcontain">
 					<label for="join-email">이메일</label>
-					<input type="email" name="email" id="join-emial">
+					<input type="email" name="email" id="join-email">
 				</div>
 				<div data-role="fieldcontain">
 					<label for="join-password">비밀번호</label>
@@ -30,10 +29,10 @@
 				</div>
 				<div class="ui-grid-a">
 					<div class="ui-block-a">
-						<input type="reset" id="btnJoinRest" value="전체 지우기">
+						<input type="reset" id="btnJoinReset" value="전체 지우기">
 					</div>
 					<div class="ui-block-b">
-						<input type="submit" id="btnJoinSubmit" value="회원가입"> 
+						<input type="submit" id="btnJoinSubmit" value="회원가입">
 					</div>
 				</div>
 			</form>
