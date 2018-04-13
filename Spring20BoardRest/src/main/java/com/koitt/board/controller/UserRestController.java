@@ -12,12 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.koitt.board.model.FileException;
 import com.koitt.board.model.Users;
 import com.koitt.board.model.UsersException;
 import com.koitt.board.service.FileService;
@@ -137,6 +139,65 @@ public class UserRestController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	// 정보 수정하기
+    @RequestMapping(value="/user/{no}", method=RequestMethod.POST,
+            produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Map<String, Object>> modify(HttpServletRequest request,
+            @PathVariable("no") Integer no,
+            String oldPassword,
+            String newPassword,
+            String name,
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam("attachment") MultipartFile attachment) {
+        
+    	// "Basic email:password" 에서 "email:password" 부분만 떼어낸다.
+        String base64Credential = authorization.split(" ")[1];
+        
+        // 떼어낸 "email:password" 부분은 base64 인코딩 된 부분이므로 디코딩하여 복원한다.
+        String plainCredential = new String(Base64.decodeBase64(base64Credential));
+        
+        // 복원한 내용을 ":" 기준으로 나누어서 email 값을 뽑아내어 사용한다.
+        String email = plainCredential.split(":")[0];
+        
+        try {
+            boolean isMatched = usersService.isPasswordMatched(email, oldPassword);
+            
+            if (!isMatched) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            
+            String plainCredentials = email + ":" + newPassword;
+
+            String base64Credentials = new String(Base64.encodeBase64(
+                    plainCredentials.getBytes()));
+
+            System.out.println("인코딩 한 값: " + base64Credentials);
+            
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("credentials", base64Credentials);
+    
+            Users users = usersService.detailByEmail(email);
+            users.setName(name);
+            users.setPassword(newPassword);
+            
+            String filename = fileService.add(request, attachment);
+            users.setAttachment(filename);
+
+            System.out.println(users);
+            String toDeleteFile = usersService.modify(users);
+            
+            // 기존 프로필 사진 삭제
+            fileService.remove(request, toDeleteFile);
+            
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+	
 }
 
 

@@ -419,6 +419,67 @@
 					});
 				});
 			}
+
+			// 사용자 정보 수정하기 화면
+			else if (isCurrentPage('/user-setting.html')) {
+				console.log(sessionStorage.getItem('usersNo'));
+				$.ajax({
+					type: 'get',
+					url: REST_URI + "/user/" + sessionStorage.getItem('usersNo'),
+					headers: {
+						authorization: 'Basic ' + sessionStorage.getItem('base64Credentials')
+					},
+					dataType: 'json',
+					success: function(data, textStatus, xhr) {
+						$('#user-setting-id').text(data.users.no);
+						$('#user-setting-email').text(data.users.email);
+						//$('#user-settting-old-password').val(data.item.users.password);
+						//$('#user-settting-new-password').val(data.item.users.password);
+						$('#user-setting-name').val(data.users.name);
+
+						// 수정하기 버튼 클릭 이벤트
+						$('#btnUserModifySubmit').unbind('click');
+						$('#btnUserModifySubmit').bind('click', function(event) {
+							// 기본 동작 막기
+							event.preventDefault();
+
+							// 두 번 실행 방지를 위해 버튼 비활성
+							$('#btnUserModifySubmit').prop('disabled', true);
+
+							// FormData 가져오기
+							var form = $('#frmUserModify')[0];
+							var formData = new FormData(form);
+							
+							$.ajax({
+								type: 'post',
+								url: REST_URI + "/user/" + sessionStorage.getItem('usersNo'),
+								headers: {
+									authorization: 'Basic ' + sessionStorage.getItem('base64Credentials')
+								},
+								enctype: 'multipart/form-data',
+								data: formData,
+								processData: false,
+								contentType: false,
+								success: function(data, textStatus, xhr) {
+									$('#btnUserModifySubmit').prop('disabled', false);
+									$.mobile.changePage('home.html');
+								},
+								error: function(jqXHR, textStatus, errorThrown) {
+									$('#btnUserModifySubmit').prop('disabled', false);
+									if (jqXHR.status == 401) {
+										alert('비밀번호를 잘못 입력하셨습니다.');
+									}
+								}
+							});
+						});
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						console.log(JSON.stringify(jqXHR));
+						console.log(JSON.stringify(textStatus));
+						console.log(JSON.stringify(errorThrown));
+					}
+				});
+			}
 		});
 
 		// 앨리먼트 아이디에 해당하는 Form의 데이터를 JSON으로 리턴하는 함수
