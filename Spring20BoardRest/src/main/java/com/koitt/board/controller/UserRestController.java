@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.koitt.board.model.FileException;
+import com.koitt.board.model.Board;
 import com.koitt.board.model.Users;
 import com.koitt.board.model.UsersException;
 import com.koitt.board.service.FileService;
@@ -39,9 +39,7 @@ public class UserRestController {
 	@RequestMapping(value="/user/login", method=RequestMethod.POST,
 			produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Map<String, Object>> login(@RequestBody Users users) {
-
-		System.out.println(users);
-
+		
 		// 아이디 존재 유무와 비밀번호 일치 여부 확인
 		try {
 			boolean isMatched = usersService.isPasswordMatched(
@@ -54,8 +52,6 @@ public class UserRestController {
 				// 평문을 Base64로 인코딩
 				String base64Credentials = new String(Base64.encodeBase64(
 						plainCredentials.getBytes()));
-
-				System.out.println("인코딩 한 값: " + base64Credentials);
 				
 				// email 값을 이용하여 해당 사용자에 대한 정보를 DB로부터 가져오기
 				users = usersService.detailByEmail(users.getEmail());
@@ -71,6 +67,7 @@ public class UserRestController {
 			}
 
 		} catch (UsersException e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -97,7 +94,8 @@ public class UserRestController {
 			// 정상적으로 생성되었다는 응답코드를 클라이언트로 전달
 			return new ResponseEntity<>(HttpStatus.CREATED);
 
-		} catch (Exception e) {
+		} catch (Exception e){
+			e.printStackTrace();
 			System.out.println(e.getMessage());
 			
 			// 서버 오류가 발생했다는 응답코드를 클라이언트로 전달
@@ -136,6 +134,7 @@ public class UserRestController {
 			}
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -151,53 +150,85 @@ public class UserRestController {
             @RequestHeader("Authorization") String authorization,
             @RequestParam("attachment") MultipartFile attachment) {
         
-    	// "Basic email:password" 에서 "email:password" 부분만 떼어낸다.
+        // "Basic email:password" 에서 "email:pssword" 부분만 떼어낸다.
         String base64Credential = authorization.split(" ")[1];
         
-        // 떼어낸 "email:password" 부분은 base64 인코딩 된 부분이므로 디코딩하여 복원한다.
+        // 떼어낸 "email:password" 부분은 base64 인코딩 된 부분이므로 디코딩하여 복원 
         String plainCredential = new String(Base64.decodeBase64(base64Credential));
         
-        // 복원한 내용을 ":" 기준으로 나누어서 email 값을 뽑아내어 사용한다.
+        // 복원한 내용을 ":" 기준으로 나누어서 email 값을 뽑아내어 사용
         String email = plainCredential.split(":")[0];
         
         try {
+            // 이전 비밀번호가 일치하는지 확인 
             boolean isMatched = usersService.isPasswordMatched(email, oldPassword);
             
+            // 비밀번호가 일치하면 사용자 정보를 변경
             if (!isMatched) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             
+            // Base64 인코딩 전 평문
             String plainCredentials = email + ":" + newPassword;
 
-            String base64Credentials = new String(Base64.encodeBase64(
-                    plainCredentials.getBytes()));
-
-            System.out.println("인코딩 한 값: " + base64Credentials);
+            // 평문을 Base64로 인코딩
+            String base64Credentials = new String(Base64.encodeBase64(plainCredentials.getBytes()));
             
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("credentials", base64Credentials);
     
             Users users = usersService.detailByEmail(email);
-            users.setName(name);
             users.setPassword(newPassword);
             
             String filename = fileService.add(request, attachment);
             users.setAttachment(filename);
-
-            System.out.println(users);
-            String toDeleteFile = usersService.modify(users);
-            
-            // 기존 프로필 사진 삭제
-            fileService.remove(request, toDeleteFile);
-            
+            	
+            usersService.modify(users);
+         
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
             
         } catch (Exception e) {
+        	e.printStackTrace();
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 	
+	// 회원 삭제
+	@RequestMapping(value="/user/{no}", method=RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> remove(
+			@PathVariable("no") Integer no,
+			@RequestHeader("Authorization") String authorization,
+			HttpServletRequest request) {
+
+		String base64Credentials = authorization.split(" ")[1];
+
+		String plainCredentials = new String(Base64.decodeBase64(base64Credentials));
+
+		String email = plainCredentials.split(":")[0];
+		String password = plainCredentials.split(":")[1];
+
+		try {
+			boolean isMatched = usersService.isPasswordMatched(email, password);
+			
+			if (!isMatched) {
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			}
+
+			if (no != null) {
+				usersService.remove(no);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+
+			else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
 
 

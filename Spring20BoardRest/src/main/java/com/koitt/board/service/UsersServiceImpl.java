@@ -69,9 +69,10 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public String remove(Integer no, String password) throws UsersException {
-		// TODO Auto-generated method stub
-		return null;
+	public void remove(Integer no) throws UsersException {
+		usersDao.deleteUserAuthority(no);
+		usersDao.deleteUserBoard(no);
+		usersDao.delete(no);
 	}
 
 	@Override

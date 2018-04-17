@@ -76,6 +76,18 @@
   		SELECT COUNT(*) FROM users_authority
   	</select>
   	
+  	<delete id="delete-user" parameterType="int">
+  		DELETE FROM users WHERE no = #{no}
+  	</delete>
+  	
+  	<delete id="delete-user-authority" parameterType="int">
+  		DELETE FROM users_authority WHERE users_no = #{no}
+  	</delete>
+  	
+  	<delete id="delete-user-board" parameterType="int">
+  		DELETE FROM board WHERE user_no = #{userNo}	
+  	</delete>
+  	
   </mapper>
   
   

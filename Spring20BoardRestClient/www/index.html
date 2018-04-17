@@ -39,7 +39,7 @@
 	<script src="js/jquery-1.12.4.js"></script>
 	<script src="js/jquery.mobile-1.4.5.js"></script>
 	<script>
-		var REST_URI = 'http://192.168.0.19:8080/Spring20BoardRest/rest';
+		var REST_URI = 'http://192.168.0.34:8080/Spring20BoardRest/rest';
 
 		// jQueryMobile 페이지 관련 이벤트
 		
@@ -106,6 +106,10 @@
 
 						if (jqXHR.status == 401) {
 							alert('등록된 사용자가 아니거나 비밀번호를 잘못 입력하셨습니다.');
+						}
+
+						if (jqXHR.status == 500) {
+							alert('존재하지 않는 사용자입니다');
 						}
 					}
 				});
@@ -265,11 +269,8 @@
 							.attr('href', data.src)
 							.text(data.item.attachment);
 
-						console.log("이미지 경로: " + data.imgPath);
-						console.log("타입: " + (typeof data.imgPath));
 						// 만약에 이미지 파일 경로가 존재하면 이미지를 출력
-						if (data.imgPath != null) {
-							console.log("실행");
+						if (data.imgPath != '') {
 							var imgTag = $('<img>');
 							imgTag.attr('src', data.imgPath);
 							$('#board-detail-attachment').after(imgTag);
@@ -321,6 +322,7 @@
 					});
 				});
 			}
+
 			// 글 수정하기 화면
 			else if (isCurrentPage('/board-modify.html')) {
 				$.ajax({
@@ -334,7 +336,7 @@
 						$('#board-modify-no-text').text(data.item.no);
 						$('#board-modify-name').text(data.item.users.name);
 						$('#board-modify-title').val(data.item.title);
-						$('#board-modify-content').text(data.item.content);
+						$('#board-modify-content').text(data.item.no);
 						$('#board-modify-email').val(data.item.users.email);
 
 						// 글 수정하기 버튼 클릭 이벤트
@@ -353,10 +355,8 @@
 							/*
 								수정한 내용 전송
 
-								주의사항: multipart/form-data 전송 시에는 POST로 전송
-								(원래 수정은 PUT으로 보내는 것이 일반적이나, 
-								multipart/form-data는 그렇지 않다.)
-								https://blog.outsider.ne.kr/1001 블로그 글 참고
+								주의사항 : multipart/form-data 전송 시에는 POST로 전송
+								(원래 수정은 PUT으로 보내는 것이 일반적이나, multipart/form-data는 그렇지 않다.)
 							*/
 							$.ajax({
 								type: 'post',
@@ -375,11 +375,10 @@
 								error: function(jqXHR, textStatus, errorThrown) {
 									$('#btnBoardModifySubmit').prop('disabled', false);
 									if (jqXHR.status == 401) {
-										alert('본인이 작성한 게시물이 아니거나, 비밀번호를 잘못 입력하셨습니다.');
+										alert('본인이 작성한 게시물이 아니거나, 비밀번호를 잘못 입력하셧습니다.');
 									}
 								}
 							});
-							
 						});
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
@@ -389,6 +388,7 @@
 					}
 				});
 			}
+
 			// 글 삭제 확인 화면
 			else if (isCurrentPage('/board-remove-confirm.html')) {
 				$('#btnBoardDelSubmit').unbind('click');
@@ -413,16 +413,15 @@
 						error: function(jqXHR, textStatus, errorThrown) {
 							$('#btnBoardDelSubmit').prop('disabled', false);
 							if (jqXHR.status == 401) {
-								alert('본인이 작성한 게시물이 아니기 때문에 삭제할 수 없습니다.');
+								alert('본인이 작성한 게시글이 아니기 때문에 삭제할 수 없습니다.');
 							}
 						}
 					});
 				});
 			}
 
-			// 사용자 정보 수정하기 화면
+			// 회원정보 수정하기 화면
 			else if (isCurrentPage('/user-setting.html')) {
-				console.log(sessionStorage.getItem('usersNo'));
 				$.ajax({
 					type: 'get',
 					url: REST_URI + "/user/" + sessionStorage.getItem('usersNo'),
@@ -432,12 +431,10 @@
 					dataType: 'json',
 					success: function(data, textStatus, xhr) {
 						$('#user-setting-id').text(data.users.no);
+						$('#user-setting-name').text(data.users.name);
 						$('#user-setting-email').text(data.users.email);
-						//$('#user-settting-old-password').val(data.item.users.password);
-						//$('#user-settting-new-password').val(data.item.users.password);
-						$('#user-setting-name').val(data.users.name);
 
-						// 수정하기 버튼 클릭 이벤트
+						// 회원정보 수정하기 버튼 클릭 이벤트
 						$('#btnUserModifySubmit').unbind('click');
 						$('#btnUserModifySubmit').bind('click', function(event) {
 							// 기본 동작 막기
@@ -449,10 +446,16 @@
 							// FormData 가져오기
 							var form = $('#frmUserModify')[0];
 							var formData = new FormData(form);
-							
+
+							/*
+								수정한 내용 전송
+
+								주의사항 : multipart/form-data 전송 시에는 POST로 전송
+								(원래 수정은 PUT으로 보내는 것이 일반적이나, multipart/form-data는 그렇지 않다.)
+							*/
 							$.ajax({
 								type: 'post',
-								url: REST_URI + "/user/" + sessionStorage.getItem('usersNo'),
+								url: REST_URI + '/user/' + sessionStorage.getItem('usersNo'),
 								headers: {
 									authorization: 'Basic ' + sessionStorage.getItem('base64Credentials')
 								},
@@ -462,6 +465,7 @@
 								contentType: false,
 								success: function(data, textStatus, xhr) {
 									$('#btnUserModifySubmit').prop('disabled', false);
+									sessionStorage.setItem('base64Credentials', data.base64Credentials);
 									$.mobile.changePage('home.html');
 								},
 								error: function(jqXHR, textStatus, errorThrown) {
@@ -480,6 +484,39 @@
 					}
 				});
 			}
+
+			//  회원 탈퇴 확인 화면
+			else if (isCurrentPage('/user-remove-confirm.html')) {
+				$('#btnUserDelSubmit').unbind('click');
+				$('#btnUserDelSubmit').bind('click', function(event) {
+					// 기본 동작 막기
+					event.preventDefault();
+
+					// 두 번 실행 방지
+					$('#btnUserDelSubmit').prop('disabled', true);
+
+					// 삭제
+					$.ajax({
+						type: 'delete',
+						url: REST_URI + '/user/' + sessionStorage.getItem('usersNo'),
+						headers: {
+							authorization: 'Basic ' + sessionStorage.getItem('base64Credentials')
+						},
+						success: function(data, textStatus, xhr) {
+							$('#btnUserDelSubmit').prop('disabled', false);
+							sessionStorage.setItem('base64Credentials', data.credentials);
+							$.mobile.changePage('index.html');
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							$('#btnUserDelSubmit').prop('disabled', false);
+							if (jqXHR.status == 401) {
+								alert('401! 401! 401! 401! 401!');
+							}
+						}
+					});
+				});
+			}
+			
 		});
 
 		// 앨리먼트 아이디에 해당하는 Form의 데이터를 JSON으로 리턴하는 함수

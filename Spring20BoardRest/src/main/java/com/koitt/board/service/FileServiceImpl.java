@@ -206,7 +206,7 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public String getDownloadPath(HttpServletRequest request, String filename) {
-		// http://localhost:8080/Spring20BoardRest/download.do?filename=파일명
+		// http:// localhost:8080/Spring20BoardRest/download.do?filename=파일명
 		
 		// 컨텍스트 경로 가져오기 (/Spring20BoardRest)
 		String contextPath = request.getContextPath();

@@ -58,8 +58,19 @@ public class UsersDaoImpl implements UsersDao {
 	}
 
 	@Override
-	public void delete(Integer no) {
-		// TODO Auto-generated method stub
+	public void delete(Integer no) throws UsersException {
+		session.delete(MAPPER_NS + ".delete-user", no);
+	}
+	
+	@Override
+	public void deleteUserAuthority(Integer no) throws UsersException {
+		session.delete(MAPPER_NS + ".delete-user-authority", no);
+		
+	}
+	
+	@Override
+	public void deleteUserBoard(Integer no) throws UsersException {
+		session.delete(MAPPER_NS + ".delete-user-board", no);
 		
 	}
 
